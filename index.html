@@ -132,6 +132,27 @@ textarea{min-height:60px}
 .c2 small{word-break:keep-all}
 .r3,.hdr .h34{grid-template-columns:110px 1fr!important}
 @media (max-width:520px){.r3,.hdr .h34{grid-template-columns:84px 1fr!important}}
+
+/* 세대별 칸 (2026-10-14) */
+:root{--w2:92px;--w3:104px;--w4:122px;--w5:132px}
+.hdr{display:grid!important;grid-template-columns:var(--w2) var(--w3) var(--w4) var(--w5) 1fr!important}
+.fam{display:grid!important;grid-template-columns:var(--w2) 1fr!important}
+.r3{display:grid!important;grid-template-columns:var(--w3) 1fr!important;padding:0!important}
+.r3>.c3{padding:4px 4px 4px 0}
+.r4,.r5{display:grid;grid-template-columns:var(--w4) 1fr;border-top:1px dashed var(--line)}
+.r5{grid-template-columns:var(--w5) 1fr}
+.r4:first-child,.r5:first-child{border-top:0}
+.cc{padding:4px 4px 4px 0}
+.cc .pn{font-weight:600;font-size:14px;border-radius:7px;padding:1px 6px;display:inline-block}
+.c4x .pn{background:var(--g4)} .c5x .pn{background:var(--g5)}
+.cc .s{display:block;color:var(--mute);font-size:11px;margin-left:20px}
+.nn{display:inline-block;width:16px;color:var(--mute);font-size:10px}
+.c6x{padding:4px 0}
+.k6l{display:block;font-size:13px;line-height:1.5;padding:1px 0}
+.k6l .pn{background:#f3ecf6;border-radius:6px;padding:0 5px;font-weight:600}
+.k6l .p5.in{font-size:11px}
+@media (prefers-color-scheme:dark){.k6l .pn{background:#30283a}}
+@media (max-width:520px){:root{--w2:58px;--w3:64px;--w4:72px;--w5:76px}.cc .pn,.c3 .pn{font-size:12.5px;padding:1px 3px}.c2 .pn{font-size:13px;padding:2px 5px}.cc .add{display:none}.nn{width:12px}.cc .s{margin-left:12px}.k6l{font-size:12px}}
 footer{margin-top:24px;color:var(--mute);font-size:12px;border-top:1px solid var(--line);padding-top:10px}
 </style>
 </head>
@@ -152,7 +173,7 @@ footer{margin-top:24px;color:var(--mute);font-size:12px;border-top:1px solid var
 <div class="tip"><b>내 이름을 눌러 주세요.</b> 이름·태어난 해·배우자를 고치고 연락처를 넣을 수 있어요. 빠진 자녀는 <b>+ 자녀</b>(또는 이름 옆 <b>+</b>)를 눌러 바로 넣어요. 이름을 눌러 <b>소식·사진</b>도 올릴 수 있어요.</div>
 <div class="legend">숫자는 태어난 해 · 흐린 이름은 작고 · <span class="nk">북</span> 북에 계셔 연락이 닿지 않음 · <span class="fixed">점선 밑줄</span>은 가족이 고친 이름</div>
 <div class="root"><b id="rootEl"></b><span id="rootSub"></span></div>
-<div class="hdr"><div>2대 (3형제)</div><div class="h34"><div>3대</div><div>4대 → 5대</div></div></div>
+<div class="hdr"><div>2대</div><div>3대</div><div>4대</div><div>5대</div><div>6대</div></div>
 <div id="grid"></div>
 </section>
 <section id="feed">
@@ -254,17 +275,27 @@ for(var pass=0;pass<5;pass++){Object.keys(P).forEach(function(n){parseKids(info(
 function spn(n){var s=info(n).spouse;return s?'<span class="sp">♥ '+esc(s)+'</span>':''}
 function addB(n,t){return '<button type="button" class="add" data-add="'+esc(n)+'">'+(t||'+')+'</button>'}
 function sub5(n,d){d=d||1;var k=KIDS[n]||[];if(!k.length)return '';if(d===1)return '<span class="p5 col">'+k.map(function(c,i){return '<span class="k5"><span class="no">'+(i+1)+'.</span>'+pn(c)+yy(c)+spn(c)+sub5(c,2)+'</span>'}).join('')+'</span>';return '<span class="p5 in">(자녀 '+k.map(function(c){return pn(c)+yy(c)+spn(c)+sub5(c,d+1)}).join(', ')+')</span>'}
+function cellx(n,i,cls){var s=info(n).spouse;return '<div class="cc '+cls+'"><span class="nn">'+(i?i+'.':'')+'</span>'+pn(n)+yy(n)+nk(n)+addB(n)+(s?'<span class="s">♥ '+esc(s)+'</span>':'')+'</div>'}
+function c6(n){var k=KIDS[n]||[];return '<div class="c6x">'+k.map(function(c,i){return '<span class="k6l"><span class="nn">'+(k.length>1?(i+1)+'.':'')+'</span>'+pn(c)+yy(c)+spn(c)+sub5(c,2)+'</span>'}).join('')+'</div>'}
 function draw(){
 build();
 $('rootEl').innerHTML=pn(ROOT);$('rootSub').textContent='부인 박원상';
 var h='';
 (KIDS[ROOT]||[]).forEach(function(n2){
-var p2=P[n2],k3=KIDS[n2]||[];
+var p2=P[n2];
 h+='<div class="fam"><div class="c2'+(p2.dead?' dead':'')+'">'+pn(n2)+'<small>'+yr(n2)+(info(n2).spouse?' · ♥ '+esc(info(n2).spouse):'')+'</small>'+addB(n2,'+ 자녀')+'</div><div>';
-if(!k3.length)h+='<span class="none">자녀 기록 없음</span>';
-k3.forEach(function(n3){
+(KIDS[n2]||[]).forEach(function(n3){
+h+='<div class="r3"><div class="c3">'+pn(n3)+yy(n3)+nk(n3)+(info(n3).spouse?'<div class="sp3">♥ '+esc(info(n3).spouse)+'</div>':'')+'</div><div>';
 var k4=KIDS[n3]||[];
-h+='<div class="r3"><div class="c3">'+pn(n3)+yy(n3)+nk(n3)+(info(n3).spouse?'<div class="sp3">♥ '+esc(info(n3).spouse)+'</div>':'')+'</div><div class="c4">'+k4.map(function(n4){var s=info(n4).spouse,k=sub5(n4);return '<span class="p4"><span class="l1">'+pn(n4)+yy(n4)+addB(n4)+'</span>'+(s?'<span class="l2 sp">♥ '+esc(s)+'</span>':'')+(k?'<span class="l2">'+k+'</span>':'')+'</span>'}).join('')+addB(n3,'+ 자녀')+'</div></div>';
+if(!k4.length)h+='<div class="r4"><div class="cc">'+addB(n3,'+ 자녀')+'</div><div></div></div>';
+k4.forEach(function(n4,i4){
+h+='<div class="r4">'+cellx(n4,k4.length>1?i4+1:0,'c4x')+'<div>';
+var k5=KIDS[n4]||[];
+if(!k5.length)h+='<div class="r5"><div class="cc"></div><div></div></div>';
+k5.forEach(function(n5,i5){h+='<div class="r5">'+cellx(n5,k5.length>1?i5+1:0,'c5x')+c6(n5)+'</div>'});
+h+='</div></div>';
+});
+h+='</div></div>';
 });
 h+='</div></div>';
 });
