@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>조씨 집안 가계도</title>
+<meta property="og:title" content="조씨 집안 가계도">
+<meta property="og:description" content="내 이름을 눌러 이름·가족·연락처를 고쳐 주세요">
+<meta name="robots" content="noindex,nofollow">
+<style>
+:root{--bg:#fafaf8;--fg:#1c1c1c;--mute:#6f6f6f;--card:#fff;--line:#dcd8d0;--accent:#8a5a2b;--g3:#f4e9dc;--g4:#eef2ea;--g5:#eef0f6;--ok:#2e7d4f;--err:#b3261e}
+@media (prefers-color-scheme:dark){:root{--bg:#161616;--fg:#f2f2f2;--mute:#a0a0a0;--card:#222;--line:#3a3a3a;--accent:#d9a46b;--g3:#3a2d20;--g4:#26301f;--g5:#232838}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif}
+.wrap{max-width:1000px;margin:0 auto;padding:16px 12px 60px}
+header h1{font-size:22px;margin:0;letter-spacing:-.02em}
+header p{margin:2px 0 0;color:var(--mute);font-size:13px}
+nav{position:sticky;top:0;z-index:5;background:var(--bg);display:flex;gap:6px;padding:10px 0;border-bottom:1px solid var(--line)}
+nav button{flex:1;border:1px solid var(--line);background:var(--card);color:var(--fg);font:inherit;font-size:14px;padding:8px 4px;border-radius:10px;cursor:pointer}
+nav button.on{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+section{display:none}section.on{display:block}
+.tip{background:var(--g3);border-radius:10px;padding:8px 12px;font-size:14px;margin:12px 0 8px}
+.tip b{color:var(--accent)}
+.legend{color:var(--mute);font-size:12px;margin:0 0 10px}
+.root{display:inline-block;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:6px 14px;margin:4px 0 10px}
+.root b{font-size:17px}.root span{color:var(--mute);font-size:12px;margin-left:6px}
+/* generation grid */
+.hdr,.fam,.r3{display:grid;grid-template-columns:92px 1fr}
+.r3{grid-template-columns:88px 1fr}
+.hdr{position:sticky;top:57px;z-index:4;background:var(--bg);font-size:12px;font-weight:600;color:var(--mute);padding:4px 0;border-bottom:1px solid var(--line)}
+.hdr .h34{display:grid;grid-template-columns:88px 1fr}
+.fam{border-bottom:1px solid var(--line);padding:6px 0}
+.c2{padding-right:6px}
+.c2 .pn{display:inline-block;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:3px 8px;font-weight:600}
+.c2 small{display:block;color:var(--mute);font-size:11px;margin:2px 0 0 4px}
+.c2.dead .pn{color:var(--mute)}
+.r3{padding:3px 0;border-top:1px dashed var(--line)}
+.r3:first-child{border-top:0}
+.c3 .pn{display:inline-block;background:var(--g3);border-radius:8px;padding:2px 7px;font-weight:600;font-size:14px}
+.c4{display:flex;flex-wrap:wrap;gap:4px 5px;align-items:flex-start}
+.p4{background:var(--g4);border-radius:8px;padding:2px 7px;font-size:13px}
+.p4{display:inline-flex;flex-direction:column;align-items:flex-start}
+.p4 .l2{font-size:11px;margin-top:1px}
+.p4 .l2.sp{margin-left:2px}
+.p4 .p5{margin-left:0}
+.p5.col{display:flex;flex-direction:column;gap:1px}
+.k5{display:block;white-space:nowrap}
+.p5.in{display:inline;margin-left:4px;color:var(--mute);white-space:normal}
+.p5.in .pn{background:transparent;padding:0}
+.p5{display:inline-flex;flex-wrap:wrap;gap:3px;margin-left:4px;font-size:12px}
+.p5 .pn{background:var(--g5);border-radius:6px;padding:0 5px}
+.no{color:var(--mute);font-size:11px;margin:0 2px 0 4px}
+.p5 .no:first-child{margin-left:0}
+.pn{cursor:pointer}
+.pn:hover{outline:2px solid var(--accent);outline-offset:1px;border-radius:6px}
+.y{color:var(--mute);font-size:10px;margin-left:2px}
+.fixed{text-decoration:underline dotted var(--accent);text-underline-offset:3px}
+.sp{color:var(--mute);font-size:11px;margin-left:3px}
+.none{color:var(--mute);font-size:12px}
+.add{border:1px dashed var(--line);background:transparent;color:var(--accent);font:inherit;font-size:11px;line-height:1.4;padding:0 6px;border-radius:999px;cursor:pointer;margin-left:3px;vertical-align:middle}
+.c2 .add{display:inline-block;margin:4px 0 0 0}
+.c4>.add{align-self:center}
+.sp3{color:var(--mute);font-size:11px;margin-left:2px}
+@media (max-width:520px){.hdr,.fam{grid-template-columns:72px 1fr}.r3,.hdr .h34{grid-template-columns:70px 1fr}.c3 .pn{font-size:13px;padding:2px 5px}.p4{font-size:12px;padding:1px 5px}.c2 .pn{padding:2px 5px;font-size:14px}}
+/* contacts */
+h2{font-size:17px;margin:14px 0 8px}
+.hint{color:var(--mute);font-size:13px;margin:0 0 10px}
+.cf{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 12px;margin-bottom:10px}
+.cf h3{font-size:15px;margin:0 0 4px}
+.row{display:grid;grid-template-columns:76px 1fr auto;gap:2px 8px;padding:5px 0;border-top:1px solid var(--line);align-items:start}
+.row:first-of-type{border-top:0}
+.row .n{font-weight:600}
+.row.g4 .n,.row.g5 .n{padding-left:10px;font-weight:500;font-size:14px}
+.row .d{font-size:14px}.row .d a{color:var(--accent);font-weight:600;text-decoration:none}
+.row .d .m{display:block;color:var(--mute);font-size:12px}
+.row.empty .d{color:var(--mute);font-size:13px}
+.post{border-top:1px solid var(--line);padding:10px 0}
+.ph{display:flex;align-items:center;gap:6px;font-size:13px}
+.ph .pn{font-weight:600;font-size:15px}
+.pt{color:var(--mute);font-size:12px}
+.pdel{margin-left:auto;border:0;background:transparent;color:var(--mute);font:inherit;font-size:12px;cursor:pointer;text-decoration:underline}
+.ptx{margin:6px 0;font-size:15px;line-height:1.6;word-break:break-word}
+.pimgs{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:6px;margin-top:6px}
+.pimgs img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;background:var(--line);display:block}
+.thumbs{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.thumbs img{width:64px;height:64px;object-fit:cover;border-radius:6px}
+label.filebtn{display:inline-block;margin-top:8px;border:1px dashed var(--accent);color:var(--accent);padding:8px 14px;border-radius:10px;cursor:pointer;font-size:14px}
+@media (max-width:520px){nav button{font-size:13px;padding:8px 2px}}
+.card{background:var(--card);border:1px solid var(--line)!important;border-radius:14px;padding:12px 14px;margin-bottom:12px}
+.ph{flex-wrap:wrap}
+.pw{color:var(--mute);font-size:12px}
+.pimgs.n1{grid-template-columns:1fr}.pimgs.n1 img{aspect-ratio:auto;max-height:520px;object-fit:contain;background:transparent}
+.pimgs.n2{grid-template-columns:1fr 1fr}
+.pimgs.n3{grid-template-columns:repeat(3,1fr)}
+.pic{position:relative;display:block;cursor:zoom-in}
+.pic img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;background:var(--line);display:block}
+.pimgs.n1 .pic img{aspect-ratio:auto;max-height:520px;object-fit:contain;background:transparent}
+.more{position:absolute;inset:0;background:rgba(0,0,0,.5);color:#fff;font-size:24px;font-weight:700;display:flex;align-items:center;justify-content:center;border-radius:8px}
+.lbrow{display:flex;align-items:center;gap:6px;max-width:100%}
+.lbb{border:0;background:rgba(255,255,255,.15);color:#fff;font-size:34px;line-height:1;width:44px;height:64px;border-radius:10px;cursor:pointer;flex:none}
+.lb .lbrow img{max-width:calc(100vw - 120px)}
+.lb{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:40;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:12px}
+.lb[hidden]{display:none}
+.lb img{max-width:100%;max-height:82vh;object-fit:contain}
+.lb a{color:#fff;font-size:14px}
+.compose{display:flex;gap:6px;margin:8px 0 14px}
+.compose[hidden]{display:none}
+.compose select{flex:1;min-width:0;font:inherit;font-size:15px;padding:9px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--fg)}
+.compose button{border:0;background:var(--accent);color:#fff;font:inherit;font-weight:600;padding:0 14px;border-radius:10px;cursor:pointer;white-space:nowrap}
+#newsBar{cursor:pointer}
+.ed{border:1px solid var(--line);background:var(--card);color:var(--accent);font:inherit;font-size:12px;padding:2px 10px;border-radius:999px;cursor:pointer}
+/* modal */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:flex-end;justify-content:center;z-index:20}
+.ov[hidden]{display:none}
+.sheet{background:var(--bg);width:100%;max-width:520px;max-height:92vh;overflow:auto;border-radius:16px 16px 0 0;padding:16px 16px 24px}
+@media (min-width:700px){.ov{align-items:center}.sheet{border-radius:16px}}
+@media (max-width:699px){.ov{align-items:stretch}.sheet{max-height:none;height:100%;border-radius:0;padding-bottom:40vh}.shh{position:sticky;top:-16px;background:var(--bg);padding-top:4px;z-index:1}}
+.shh{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.shh b{font-size:20px}
+.shh .sub{color:var(--mute);font-size:12px}
+.x{border:0;background:var(--card);color:var(--fg);font:inherit;padding:6px 12px;border-radius:999px;cursor:pointer}
+h4{margin:16px 0 0;font-size:14px;color:var(--accent)}
+label{display:block;font-size:13px;color:var(--mute);margin:10px 0 3px}
+input,textarea{width:100%;font:inherit;font-size:16px;padding:9px 11px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--fg)}
+textarea{min-height:60px}
+.small{font-size:12px;color:var(--mute);margin-top:3px}
+.btn{display:block;width:100%;margin-top:14px;border:0;background:var(--accent);color:#fff;font:inherit;font-size:16px;font-weight:600;padding:12px;border-radius:12px;cursor:pointer}
+.btn:disabled{opacity:.5}
+.msg{margin-top:8px;font-size:14px}.msg.ok{color:var(--ok)}.msg.err{color:var(--err)}
+.nk{display:inline-block;background:#fde8e8;color:#c0392b;font-size:10px;font-weight:700;line-height:1.5;padding:0 6px;border-radius:999px;margin-left:4px;vertical-align:middle}
+.dd{color:var(--mute)!important;opacity:.75}
+.c2 small{word-break:keep-all}
+.r3,.hdr .h34{grid-template-columns:110px 1fr!important}
+@media (max-width:520px){.r3,.hdr .h34{grid-template-columns:84px 1fr!important}}
+footer{margin-top:24px;color:var(--mute);font-size:12px;border-top:1px solid var(--line);padding-top:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<h1>趙氏 家系圖 · 조씨 집안 가계도</h1>
+<p>2026년 10월 조규철 님이 정리한 가계도를 바탕으로, 가족이 함께 고쳐 가요.</p>
+</header>
+<nav>
+<button data-s="tree" class="on">가계도</button>
+<button data-s="feed">가족 소식</button>
+<button data-s="list">가족 연락처</button>
+<button data-s="orig">한 장 보기</button>
+</nav>
+<section id="tree" class="on">
+<div class="tip" id="newsBar" hidden></div>
+<div class="tip"><b>내 이름을 눌러 주세요.</b> 이름·태어난 해·배우자를 고치고 연락처를 넣을 수 있어요. 빠진 자녀는 <b>+ 자녀</b>(또는 이름 옆 <b>+</b>)를 눌러 바로 넣어요. 이름을 눌러 <b>소식·사진</b>도 올릴 수 있어요.</div>
+<div class="legend">숫자는 태어난 해 · 흐린 이름은 작고 · <span class="nk">북</span> 북에 계셔 연락이 닿지 않음 · <span class="fixed">점선 밑줄</span>은 가족이 고친 이름</div>
+<div class="root"><b id="rootEl"></b><span id="rootSub"></span></div>
+<div class="hdr"><div>2대 (3형제)</div><div class="h34"><div>3대</div><div>4대 → 5대</div></div></div>
+<div id="grid"></div>
+</section>
+<section id="feed">
+<h2>가족 소식</h2>
+<div id="fgate">
+<p class="hint">가족끼리만 볼 수 있어요. 가족 비밀번호를 넣어 주세요.</p>
+<input id="pw3" type="password" inputmode="numeric" placeholder="가족 비밀번호">
+<button class="btn" id="go3">소식 보기</button>
+<div class="msg" id="fmsg3"></div>
+</div>
+<p class="hint" id="fhint" hidden>아래에서 내 이름을 골라 글·사진을 올려요(가계도에서 이름을 눌러도 돼요). 사진을 누르면 크게 볼 수 있어요.</p>
+<div class="compose" id="compose" hidden><select id="who"></select><button type="button" id="whoGo">글·사진 올리기</button></div>
+<div id="fl"></div>
+</section>
+<section id="list">
+<h2>가족 연락처</h2>
+<div id="gate">
+<p class="hint">가족끼리만 볼 수 있어요. 가족 비밀번호를 넣어 주세요.</p>
+<input id="pw2" type="password" inputmode="numeric" placeholder="가족 비밀번호">
+<button class="btn" id="go">연락처 보기</button>
+<div class="msg" id="gmsg"></div>
+</div>
+<div id="cl"></div>
+</section>
+<section id="orig">
+<h2>한 장 보기 (2026년 10월 14일 처음 정리)</h2>
+<p class="hint">처음 정리한 가계도를 한 장 그림으로 옮긴 거예요. 가족이 고친 내용은 "가계도" 탭에 먼저 반영돼요. 그림을 누르면 크게 볼 수 있어요.</p>
+<a href="tree.png" target="_blank" rel="noopener"><img src="tree.png" alt="조씨 가계도 한 장 그림" style="width:100%;border:1px solid var(--line);border-radius:8px;background:#fff"></a>
+</section>
+<footer>가계도에 없는 가족(배우자·자녀·손주)은 부모 이름을 눌러 "자녀 추가"에 적어 주세요. 이 페이지 주소는 가족끼리만 나눠 주세요.</footer>
+</div>
+
+<div class="lb" id="lb" hidden><div class="lbrow"><button type="button" class="lbb" id="lbPrev">‹</button><img id="lbImg" alt="사진"><button type="button" class="lbb" id="lbNext">›</button></div><div id="lbCnt" style="color:#fff;font-size:14px"></div><a id="lbLink" target="_blank" rel="noopener">원본 파일 보기</a><div style="color:#ccc;font-size:13px">사진 밖을 누르면 닫혀요</div></div>
+<div class="ov" id="ov" hidden>
+<div class="sheet">
+<div class="shh"><div><b id="mTitle"></b><div class="sub" id="mSub"></div></div><button class="x" id="mClose">닫기</button></div>
+<h4>이름·가족 정보</h4>
+<label for="mFix">이름 (틀렸으면 지우고 바르게 고쳐 쓰세요)</label>
+<input id="mFix" maxlength="20">
+<label for="mYear">태어난 해</label>
+<input id="mYear" inputmode="numeric" maxlength="4" placeholder="예: 1963">
+<div id="mSpBox"><label for="mSp">배우자 (원하시면)</label>
+<input id="mSp" maxlength="40" placeholder="예: 김윤희"></div>
+<div id="mKidsBox"><label for="mKids">자녀 추가 (가계도에 없는 자녀만)</label>
+<textarea id="mKids" maxlength="200" placeholder="예: 정다인 2001, 정하늘 05"></textarea>
+<div class="small">성까지 쓰고, 태어난 해는 이름 뒤에 써 주세요. 여러 명은 쉼표로 나눠요. 잘못 넣은 자녀는 그 이름을 눌러 "가계도에서 빼기"로 지워요.</div></div>
+<div id="mContact"><h4>연락처 (가족끼리만 보여요)</h4>
+<label for="mPl">사는 곳</label><input id="mPl" maxlength="40" placeholder="예: 서울 송파구 / 미국 LA">
+<label for="mPh">휴대폰</label><input id="mPh" type="tel" inputmode="tel" maxlength="30" placeholder="010-0000-0000">
+<label for="mMm">메모</label><textarea id="mMm" maxlength="200" placeholder="전할 말, 가계도에서 틀린 곳 등"></textarea></div>
+<label for="mPw">가족 비밀번호</label>
+<input id="mPw" type="password" inputmode="numeric" placeholder="카톡방에서 안내받은 번호">
+<div class="msg" id="mMsg"></div>
+<button class="btn" id="mSave">저장하기</button>
+<div id="mPostBox"><h4>소식·사진 올리기</h4>
+<div class="small">근황, 추억, 옛날 사진 등을 가족과 나눠요. 사진은 대표님 구글 드라이브에 저장돼요.</div>
+<textarea id="pText" maxlength="2000" placeholder="예: 이번 추석 모임 사진이에요."></textarea>
+<label class="filebtn">사진 고르기 (한 번에 30장까지)<input id="pFiles" type="file" accept="image/*" multiple hidden></label>
+<div class="small" id="pInfo"></div>
+<div class="thumbs" id="pPrev"></div>
+<button class="btn" id="pSend">소식 올리기</button>
+<div class="msg" id="pMsg"></div>
+<div id="pList"></div></div>
+<button class="btn" id="mDel" style="background:transparent;color:var(--err);border:1px solid var(--err);display:none">가계도에서 빼기</button>
+<button class="btn" id="mClose2" style="background:transparent;color:var(--fg);border:1px solid var(--line)">닫기</button>
+</div>
+</div>
+
+<script>
+var API='https://script.google.com/macros/s/AKfycbzbxMKc_RmlT0Qbztc5-QKDCnaT0O8iTFazAhR-HadnnyjzwnOcrj8F-_fxtP7RCe8t9w/exec';
+var ROOT='조봉윤';
+var F=[
+['조형국',1904,[['조경호',1925,[['조승철',1955,[['조나단',1982],['조은별',1987]]],['조용철',1958,[['조한울',1987],['조한아',1989]]],['조인철',1960,[['조상우',1990],['조민아',1992]]],['조규철',1963,[['조효원',1996]]]]],['조완호',1931,[['조현철',0,[['조은영',0],['조희영',0]]]]],['조관호',1934],['조금옥',1941]]],
+['조이국',1908,[['조진옥',0],['조상호',1926],['조인호',0]]],
+['조창국',1912,[['조추옥',0],['조근호',0],['조경자',1954],['조승호',1962,[['조바울',0],['조혜미',0]]]]]
+];
+var DEAD={'조경호':1,'조경자':1,'조승호':1};
+var NORTH={'조관호':1,'조금옥':1,'조진옥':1,'조상호':1,'조인호':1,'조추옥':1,'조근호':1};
+var SP={'조형국':'김의규 · 곽숙덕','조경호':'정효빈','조인철':'신경원','조규철':'정진옥','조효원':'김지연'};
+var INFO={},P={},KIDS={},loaded='',LASTREC=null;
+function $(id){return document.getElementById(id)}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function info(n){var o=INFO[n]||{};if(!o.spouse&&SP[n]){var c={};for(var k in o)c[k]=o[k];c.spouse=SP[n];return c}return o}
+function base(n){return String(n).replace(/#.*$/,'')}
+function dn(n){var f=info(n).fix;return f&&f!==base(n)?f:base(n)}
+function yr(n){return info(n).year||(P[n]&&P[n].y)||''}
+function yy(n){var y=yr(n);return y?'<span class="y">'+String(y).slice(2)+'</span>':''}
+function nk(n){return NORTH[n]?'<span class="nk">북</span>':''}
+function pn(n){return '<span class="pn'+(dn(n)!==base(n)?' fixed':'')+(P[n]&&P[n].dead&&P[n].gen>2?' dd':'')+'" data-p="'+esc(n)+'">'+esc(dn(n))+'</span>'}
+function parseKids(s,py){py=+py||0;var cy=new Date().getFullYear(),out=[];function push(n,y){n=String(n||'').replace(/[()]/g,'').trim();if(!n)return;if(y&&y<100){if(py){y=1900+y;if(y<py+12)y+=100}else{y=(2000+y<=cy+5)?2000+y:1900+y}}out.push([n,y||0])}String(s||'').split(/[,，、;\n]+/).forEach(function(tok){var pend=null;tok.trim().split(/\s+/).filter(Boolean).forEach(function(w){var m=w.match(/^\(?(\d{4}|\d{2})\)?년?생?$/);if(m){if(pend){push(pend,+m[1]);pend=null}return}if(pend){push(pend,0);pend=null}var m2=w.match(/^(.*?[^\d(])\(?(\d{4}|\d{2})\)?$/);if(m2)push(m2[1],+m2[2]);else pend=w});if(pend)push(pend,0)});return out}
+function build(){
+P={};KIDS={};
+function add(n,o,par){if(P[n])return false;P[n]=o;if(par){(KIDS[par]=KIDS[par]||[]).push(n)}return true}
+add(ROOT,{gen:1,fam:'',y:0,dead:1});
+F.forEach(function(f){add(f[0],{gen:2,fam:f[0],y:f[1],dead:!f[3],parent:ROOT},ROOT);
+f[2].forEach(function(k){add(k[0],{gen:3,fam:f[0],y:k[1],parent:f[0],dead:DEAD[k[0]]},f[0]);(k[2]||[]).forEach(function(g){add(g[0],{gen:4,fam:f[0],y:g[1],parent:k[0],dead:DEAD[g[0]]},k[0]);(g[2]||[]).forEach(function(q){add(q[0],{gen:5,fam:f[0],y:q[1],parent:g[0]},g[0])})})})});
+for(var pass=0;pass<5;pass++){Object.keys(P).forEach(function(n){parseKids(info(n).kids,info(n).year||P[n].y).forEach(function(c){var key=c[0];if(P[key]&&P[key].parent!==n)key=c[0]+'#'+n;if(P[key]){if(P[key].parent===n&&!P[key].y&&c[1])P[key].y=c[1];return}add(key,{gen:P[n].gen+1,fam:P[n].fam||n,y:c[1],parent:n,added:1},n)})})}
+}
+function spn(n){var s=info(n).spouse;return s?'<span class="sp">♥ '+esc(s)+'</span>':''}
+function addB(n,t){return '<button type="button" class="add" data-add="'+esc(n)+'">'+(t||'+')+'</button>'}
+function sub5(n,d){d=d||1;var k=KIDS[n]||[];if(!k.length)return '';if(d===1)return '<span class="p5 col">'+k.map(function(c,i){return '<span class="k5"><span class="no">'+(i+1)+'.</span>'+pn(c)+yy(c)+spn(c)+sub5(c,2)+'</span>'}).join('')+'</span>';return '<span class="p5 in">(자녀 '+k.map(function(c){return pn(c)+yy(c)+spn(c)+sub5(c,d+1)}).join(', ')+')</span>'}
+function draw(){
+build();
+$('rootEl').innerHTML=pn(ROOT);$('rootSub').textContent='부인 박원상';
+var h='';
+(KIDS[ROOT]||[]).forEach(function(n2){
+var p2=P[n2],k3=KIDS[n2]||[];
+h+='<div class="fam"><div class="c2'+(p2.dead?' dead':'')+'">'+pn(n2)+'<small>'+yr(n2)+(info(n2).spouse?' · ♥ '+esc(info(n2).spouse):'')+'</small>'+addB(n2,'+ 자녀')+'</div><div>';
+if(!k3.length)h+='<span class="none">자녀 기록 없음</span>';
+k3.forEach(function(n3){
+var k4=KIDS[n3]||[];
+h+='<div class="r3"><div class="c3">'+pn(n3)+yy(n3)+nk(n3)+(info(n3).spouse?'<div class="sp3">♥ '+esc(info(n3).spouse)+'</div>':'')+'</div><div class="c4">'+k4.map(function(n4){var s=info(n4).spouse,k=sub5(n4);return '<span class="p4"><span class="l1">'+pn(n4)+yy(n4)+addB(n4)+'</span>'+(s?'<span class="l2 sp">♥ '+esc(s)+'</span>':'')+(k?'<span class="l2">'+k+'</span>':'')+'</span>'}).join('')+addB(n3,'+ 자녀')+'</div></div>';
+});
+h+='</div></div>';
+});
+$('grid').innerHTML=h;if($('who'))fillWho();
+}
+function refresh(){return fetch(API+'?action=info&t='+Date.now()).then(function(r){return r.json()}).then(function(j){if(j.ok){INFO=j.info||{};draw();if(!$('cl').hidden&&window.LAST)render(window.LAST)}}).catch(function(){})}
+draw();refresh().then(checkNews);
+document.addEventListener('click',function(e){var im=e.target.closest('[data-img]');if(im){LB.set=SETS[im.dataset.set]||[im.dataset.img];LB.i=+im.dataset.i||0;lbShow();$('lb').hidden=false;return}if(e.target.closest('#lbPrev')){LB.i=(LB.i-1+LB.set.length)%LB.set.length;lbShow();return}if(e.target.closest('#lbNext')){LB.i=(LB.i+1)%LB.set.length;lbShow();return}if(e.target.closest('#lb')){if(!e.target.closest('#lbLink')&&e.target.id!=='lbImg')$('lb').hidden=true;return}if(e.target.closest('#newsBar')){document.querySelector('nav button[data-s="feed"]').click();return}var dl=e.target.closest('[data-del]');if(dl){delPost(dl.dataset.del);return}var a=e.target.closest('[data-add]');if(a){openP(a.dataset.add,1);return}var t=e.target.closest('[data-p]');if(t){openP(t.dataset.p)}var b=e.target.closest('[data-ed]');if(b)openP(b.dataset.ed)});
+var navs=document.querySelectorAll('nav button');
+navs.forEach(function(b){b.onclick=function(){navs.forEach(function(x){x.classList.toggle('on',x===b)});document.querySelectorAll('section').forEach(function(s){s.classList.toggle('on',s.id===b.dataset.s)});if(b.dataset.s==='list'&&getPw())load(getPw());if(b.dataset.s==='feed'&&getPw())loadFeed(getPw())}});
+function getPw(){try{return localStorage.fpw||''}catch(e){return ''}}
+function setPw(v){try{localStorage.fpw=v}catch(e){}}
+// modal
+var cur=null;
+function openP(n,kidFocus){
+cur=n;var p=P[n]||{gen:3,fam:''};var i=info(n);
+$('mTitle').textContent=dn(n);
+$('mSub').textContent=[p.gen+'대',p.fam&&p.gen>1?dn(p.fam)+' 집안':'',p.parent&&p.gen>2?dn(p.parent)+'의 자녀':'',dn(n)!==base(n)?'원래 표기 '+base(n):'',p.dead?'작고':'',NORTH[n]?'북에 계심':''].filter(Boolean).join(' · ');
+$('mFix').value=dn(n);$('mFix').placeholder=base(n);LASTREC=null;$('mYear').value=yr(n);$('mSp').value=i.spouse||'';$('mKids').value=i.kids||'';
+$('mKidsBox').style.display=p.gen<=1?'none':'block';$('mDel').style.display=(P[n]&&P[n].added)?'block':'none';
+$('mContact').style.display=p.gen>=3?'block':'none';
+$('mPl').value='';$('mPh').value='';$('mMm').value='';
+$('mPw').value=getPw();$('mMsg').textContent='';$('mMsg').className='msg';$('mSave').disabled=false;
+$('ov').hidden=false;document.body.style.overflow='hidden';
+resetPost();if($('mPw').value){loadOne(n);loadPosts(n)}
+if(kidFocus){$('mMsg').className='msg';$('mMsg').textContent='빠진 자녀를 "자녀 추가" 칸에 적고 저장해 주세요.';setTimeout(function(){$('mKids').scrollIntoView({block:'center'});$('mKids').focus()},150)}
+}
+var PFILES=[],SETS={},LB={set:[],i:0};
+function lbShow(){var id=LB.set[LB.i];$('lbImg').src=thumbU(id,1600);$('lbLink').href=fullU(id);$('lbCnt').textContent=LB.set.length>1?(LB.i+1)+' / '+LB.set.length:'';$('lbPrev').style.visibility=LB.set.length>1?'visible':'hidden';$('lbNext').style.visibility=LB.set.length>1?'visible':'hidden'}
+document.addEventListener('keydown',function(e){if($('lb').hidden)return;if(e.key==='Escape')$('lb').hidden=true;if(e.key==='ArrowRight'){LB.i=(LB.i+1)%LB.set.length;lbShow()}if(e.key==='ArrowLeft'){LB.i=(LB.i-1+LB.set.length)%LB.set.length;lbShow()}});
+function thumbU(id,w){return 'https://drive.google.com/thumbnail?id='+encodeURIComponent(id)+'&sz=w'+(w||600)}
+function fullU(id){return 'https://drive.google.com/file/d/'+encodeURIComponent(id)+'/view'}
+function toTs(s){var m=String(s).match(/(\d+)-(\d+)-(\d+)\s+(\d+):(\d+)/);return m?new Date(+m[1],m[2]-1,+m[3],+m[4],+m[5]).getTime():0}
+function ago(s){var t=toTs(s);if(!t)return s;var df=(Date.now()-t)/60000;if(df<1)return '방금';if(df<60)return Math.floor(df)+'분 전';if(df<1440)return Math.floor(df/60)+'시간 전';if(df<2880)return '어제';var d=new Date(t);return d.getFullYear()+'.'+(d.getMonth()+1)+'.'+d.getDate()}
+function whoTxt(n){var p=P[n];if(!p)return '';return [p.gen+'대',p.fam&&p.gen>1?dn(p.fam)+' 집안':''].filter(Boolean).join(' · ')}
+function postHtml(p,showName){var ph=p.photos||[],k=ph.length>=3?'n3':'n'+ph.length;return '<div class="post'+(showName?' card':'')+'"><div class="ph">'+(showName?'<span class="pn" data-p="'+esc(p.name)+'">'+esc(P[p.name]?dn(p.name):(p.label||base(p.name)))+'</span><span class="pw">'+esc(whoTxt(p.name))+'</span>':'')+'<span class="pt">'+esc(ago(p.at))+'</span><button type="button" class="pdel" data-del="'+esc(p.id)+'">지우기</button></div>'+(p.text?'<div class="ptx">'+esc(p.text).replace(/\n/g,'<br>')+'</div>':'')+(ph.length?(SETS[p.id]=ph,'<div class="pimgs '+k+'">'+ph.slice(0,9).map(function(id,i){var more=(i===8&&ph.length>9)?'<span class="more">+'+(ph.length-9)+'</span>':'';return '<span class="pic" data-img="'+esc(id)+'" data-set="'+esc(p.id)+'" data-i="'+i+'"><img loading="lazy" src="'+thumbU(id,ph.length===1?1200:600)+'" alt="사진">'+more+'</span>'}).join('')+'</div>'):'')+'</div>'}
+function fillWho(){var o=['<option value="">누구로 올릴까요? (내 이름 고르기)</option>'];(function walk(n,d){(KIDS[n]||[]).forEach(function(c){o.push('<option value="'+esc(c)+'">'+(d>2?'　'.repeat(d-2):'')+esc(dn(c))+(P[c].y?' ('+P[c].y+')':'')+'</option>');walk(c,d+1)})})(ROOT,2);var w=$('who'),v=w.value;w.innerHTML=o.join('');w.value=v}
+function checkNews(){var b=$('newsBar'),pw=getPw();if(!pw){b.hidden=false;b.innerHTML='<b>가족 소식</b> 보러 가기 →';return}fetch(API+'?action=posts&pw='+encodeURIComponent(pw)+'&t='+Date.now()).then(function(r){return r.json()}).then(function(j){if(!j.ok)return;var last=0;try{last=+localStorage.lastFeed||0}catch(e){}var nw=j.posts.filter(function(p){return toTs(p.at)>last}).length;b.hidden=false;b.innerHTML=nw?'<b>새 가족 소식 '+nw+'개</b> · 보러 가기 →':(j.posts.length?'<b>가족 소식</b> '+j.posts.length+'개 · 보러 가기 →':'<b>가족 소식</b> · 첫 소식을 올려 주세요 →')}).catch(function(){})}
+function shrink(file){return new Promise(function(res,rej){var u=URL.createObjectURL(file),img=new Image();img.onload=function(){var mx=1600,s=Math.min(1,mx/Math.max(img.width,img.height)),c=document.createElement('canvas');c.width=Math.round(img.width*s);c.height=Math.round(img.height*s);c.getContext('2d').drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(u);res(c.toDataURL('image/jpeg',0.82).split(',')[1])};img.onerror=function(){rej('img')};img.src=u})}
+function resetPost(){PFILES=[];$('pText').value='';$('pFiles').value='';$('pPrev').innerHTML='';$('pInfo').textContent='';$('pMsg').textContent='';$('pMsg').className='msg';$('pList').innerHTML='';$('pSend').disabled=false}
+function loadPosts(n){var pw=$('mPw').value.trim();if(!pw)return;fetch(API+'?action=posts&pw='+encodeURIComponent(pw)+'&name='+encodeURIComponent(n)+'&t='+Date.now()).then(function(r){return r.json()}).then(function(j){if(cur!==n||!j.ok)return;$('pList').innerHTML=j.posts.length?'<div class="small" style="margin-top:14px">'+esc(dn(n))+' 님 소식 '+j.posts.length+'개</div>'+j.posts.map(function(p){return postHtml(p,false)}).join(''):''}).catch(function(){})}
+function loadFeed(pw){var g=$('fmsg3');g.className='msg';g.textContent='불러오는 중...';fetch(API+'?action=posts&pw='+encodeURIComponent(pw)+'&t='+Date.now()).then(function(r){return r.json()}).then(function(j){if(!j.ok){g.className='msg err';g.textContent='가족 비밀번호가 맞지 않아요.';$('fgate').style.display='block';return}setPw(pw);$('fgate').style.display='none';$('fhint').hidden=false;$('compose').hidden=false;g.textContent='';var mx=0;j.posts.forEach(function(p){mx=Math.max(mx,toTs(p.at))});try{localStorage.lastFeed=Math.max(mx,+localStorage.lastFeed||0)}catch(e){}$('newsBar').innerHTML=j.posts.length?'<b>가족 소식</b> '+j.posts.length+'개 · 보러 가기 →':'<b>가족 소식</b> · 첫 소식을 올려 주세요 →';$('fl').innerHTML=j.posts.length?j.posts.map(function(p){return postHtml(p,true)}).join(''):'<p class="hint">아직 올라온 소식이 없어요. 가계도에서 이름을 눌러 첫 소식을 올려 주세요.</p>'}).catch(function(){g.className='msg err';g.textContent='연결이 잘 안 됐어요. 잠시 뒤 다시 눌러 주세요.'})}
+function delPost(id){var pw=getPw()||$('mPw').value.trim();if(!pw||!confirm('이 소식을 지울까요? (홈페이지에서만 숨기고, 드라이브 사진은 남아요)'))return;fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'delpost',pw:pw,id:id})}).then(function(r){return r.json()}).then(function(j){if(j.ok){if(cur&&!$('ov').hidden)loadPosts(cur);if($('feed').classList.contains('on'))loadFeed(pw)}else alert('지우지 못했어요. 다시 해 주세요.')})}
+function closeP(){$('ov').hidden=true;document.body.style.overflow=''}
+$('mClose').onclick=closeP;$('mClose2').onclick=closeP;
+$('mDel').onclick=function(){
+var n=cur,p=P[n],m=$('mMsg');if(!p||!p.added)return;
+var pw=$('mPw').value.trim();
+if(!pw){m.className='msg err';m.textContent='가족 비밀번호를 넣어 주세요.';return}
+if(!confirm(dn(n)+' 님을 가계도에서 뺄까요?'+((KIDS[n]||[]).length?' 아래 자녀도 함께 안 보이게 돼요.':'')))return;
+var par=p.parent,pi=info(par),py=pi.year||(P[par]&&P[par].y);
+var rest=parseKids(pi.kids,py).filter(function(c){return c[0]!==base(n)}).map(function(c){return c[0]+(c[1]?' '+c[1]:'')});
+$('mDel').disabled=true;m.className='msg';m.textContent='빼는 중...';
+fetch(API+'?pw='+encodeURIComponent(pw)+'&t='+Date.now()).then(function(r){return r.json()}).then(function(j){
+if(!j.ok){$('mDel').disabled=false;m.className='msg err';m.textContent='가족 비밀번호가 맞지 않아요.';return}
+setPw(pw);
+var r=(j.list||[]).filter(function(x){return x.name===par})[0]||{};
+var body={pw:pw,name:par,fam:(P[par]&&P[par].fam)||'',fix:dn(par),year:String(yr(par)),spouse:pi.spouse||'',kids:rest.join(', '),place:r.place||'',phone:r.phone||'',memo:r.memo||''};
+return fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body)}).then(function(x){return x.json()}).then(function(j2){
+$('mDel').disabled=false;
+if(j2.ok){m.className='msg ok';m.textContent='가계도에서 뺐어요.';refresh().then(function(){setTimeout(closeP,900)})}
+else{m.className='msg err';m.textContent='빼지 못했어요. 다시 눌러 주세요.'}
+});
+}).catch(function(){$('mDel').disabled=false;m.className='msg err';m.textContent='연결이 잘 안 됐어요. 잠시 뒤 다시 눌러 주세요.'});
+};
+// 배경을 눌러도 닫히지 않게 (휴대폰 자판이 올라올 때 잘못 닫히는 문제 방지)
+$('mPw').onchange=function(){if(cur){loadOne(cur);loadPosts(cur)}};
+$('pFiles').onchange=function(){var all=[].slice.call(this.files);PFILES=all.slice(0,30);$('pInfo').textContent=PFILES.length?PFILES.length+'장 골랐어요'+(all.length>30?' (30장까지만 올라가요)':''):'';$('pPrev').innerHTML='';PFILES.forEach(function(f){var i=document.createElement('img');i.src=URL.createObjectURL(f);$('pPrev').appendChild(i)})};
+$('pSend').onclick=function(){var n=cur,pw=$('mPw').value.trim(),m=$('pMsg'),text=$('pText').value.trim(),files=PFILES.slice();
+if(!pw){m.className='msg err';m.textContent='가족 비밀번호를 넣어 주세요.';return}
+if(!text&&!files.length){m.className='msg err';m.textContent='글을 쓰거나 사진을 골라 주세요.';return}
+$('pSend').disabled=true;m.className='msg';
+var ids=new Array(files.length),done=0,fail=0,next=0;
+function show(){m.textContent='사진 올리는 중 '+done+'/'+files.length+(fail?' (실패 '+fail+'장)':'')+' · 창을 닫지 마세요'}
+function up1(i,tries){return shrink(files[i]).then(function(data){return fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'upload',pw:pw,name:n,label:dn(n),idx:i+1,data:data,type:'image/jpeg'})}).then(function(r){return r.json()})}).then(function(j){if(j.ok){ids[i]=j.id;done++;show();return}if(j.err==='pw')throw 'pw';throw 'up'}).catch(function(e){if(e==='pw')throw e;if(tries<1)return up1(i,tries+1);fail++;show()})}
+function worker(){if(next>=files.length)return Promise.resolve();var i=next++;return up1(i,0).then(worker)}
+if(files.length)show();else m.textContent='올리는 중...';
+var ws=[];for(var k=0;k<Math.min(3,files.length);k++)ws.push(worker());
+Promise.all(ws).then(function(){var got=ids.filter(Boolean);if(files.length&&!got.length)throw 'allfail';m.textContent='글을 저장하는 중...';return fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'post',pw:pw,name:n,label:dn(n),text:text,photoIds:got})}).then(function(r){return r.json()})}).then(function(j){$('pSend').disabled=false;if(j.ok){setPw(pw);m.className='msg ok';m.textContent='올렸어요'+(files.length?' (사진 '+(files.length-fail)+'장'+(fail?', '+fail+'장은 실패':'')+')':'')+'. "가족 소식"에서도 볼 수 있어요.';if($('feed').classList.contains('on'))loadFeed(pw);$('pText').value='';$('pFiles').value='';PFILES=[];$('pPrev').innerHTML='';$('pInfo').textContent='';loadPosts(n)}else{m.className='msg err';m.textContent=j.err==='pw'?'가족 비밀번호가 맞지 않아요.':'올리지 못했어요. 다시 눌러 주세요.'}}).catch(function(e){$('pSend').disabled=false;m.className='msg err';m.textContent=e==='pw'?'가족 비밀번호가 맞지 않아요.':e==='allfail'?'사진을 올리지 못했어요. 인터넷 연결을 확인하고 다시 눌러 주세요.':'연결이 잘 안 됐어요. 잠시 뒤 다시 눌러 주세요.'})};
+$('go3').onclick=function(){loadFeed($('pw3').value.trim())};
+$('whoGo').onclick=function(){var n=$('who').value;if(!n){alert('이름을 먼저 골라 주세요.');return}openP(n);setTimeout(function(){$('pText').scrollIntoView({block:'center'});$('pText').focus()},250)};
+$('pw3').onkeydown=function(e){if(e.key==='Enter')loadFeed($('pw3').value.trim())};
+function loadOne(n){
+var pw=$('mPw').value.trim(),m=$('mMsg');
+return fetch(API+'?pw='+encodeURIComponent(pw)+'&t='+Date.now()).then(function(r){return r.json()}).then(function(j){
+if(!j.ok){m.className='msg err';m.textContent='가족 비밀번호가 맞지 않아요.';return false}
+setPw(pw);loaded=n+'|'+pw;window.LAST=j.list;
+var r=(j.list||[]).filter(function(x){return x.name===n})[0];if(cur===n)LASTREC=r||null;
+if(cur===n&&r){if(!$('mPl').value)$('mPl').value=r.place||'';if(!$('mPh').value)$('mPh').value=r.phone||'';if(!$('mMm').value)$('mMm').value=r.memo||'';if(!/저장/.test(m.textContent)){m.className='msg';m.textContent='전에 넣은 내용을 불러왔어요 ('+r.at+').'}}
+return true;
+}).catch(function(){m.className='msg err';m.textContent='연결이 잘 안 됐어요. 잠시 뒤 다시 해 주세요.';return false});
+}
+$('mSave').onclick=function(){
+var n=cur,pw=$('mPw').value.trim(),m=$('mMsg'),p=P[n]||{};
+if(!pw){m.className='msg err';m.textContent='가족 비밀번호를 넣어 주세요.';return}
+$('mSave').disabled=true;m.className='msg';m.textContent='저장하는 중...';
+(loaded===n+'|'+pw?Promise.resolve(true):loadOne(n)).then(function(ok){
+if(!ok){$('mSave').disabled=false;return}
+var fx=$('mFix').value.trim()||base(n);
+var body={pw:pw,name:n,fam:p.fam||'',fix:fx,year:$('mYear').value.trim(),spouse:$('mSp').value.trim(),kids:$('mKids').value.trim(),place:$('mPl').value.trim(),phone:$('mPh').value.trim(),memo:$('mMm').value.trim()};
+var i0=info(n),r0=LASTREC||{};
+var same=dn(n)===fx&&String(yr(n))===body.year&&(i0.spouse||'')===body.spouse&&(i0.kids||'')===body.kids&&(r0.place||'')===body.place&&(r0.phone||'')===body.phone&&(r0.memo||'')===body.memo;
+if(same){$('mSave').disabled=false;m.className='msg';m.textContent='바뀐 내용이 없어요.';return}
+return fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body)}).then(function(r){return r.json()}).then(function(j){
+$('mSave').disabled=false;
+if(j.ok){m.className='msg ok';m.textContent='저장됐어요. 가계도에 바로 반영됐어요.';refresh().then(function(){$('mTitle').textContent=dn(n);if(window.LAST)load(pw,1)})}
+else{m.className='msg err';m.textContent=j.err==='pw'?'가족 비밀번호가 맞지 않아요.':'빠진 칸이 있어요.'}
+});
+}).catch(function(){$('mSave').disabled=false;m.className='msg err';m.textContent='연결이 잘 안 됐어요. 잠시 뒤 다시 눌러 주세요.'});
+};
+// contacts
+$('go').onclick=function(){load($('pw2').value.trim())};
+$('pw2').onkeydown=function(e){if(e.key==='Enter')load($('pw2').value.trim())};
+function load(pw,quiet){
+var g=$('gmsg');if(!quiet){g.className='msg';g.textContent='불러오는 중...'}
+fetch(API+'?pw='+encodeURIComponent(pw)+'&t='+Date.now()).then(function(r){return r.json()}).then(function(j){
+if(!j.ok){g.className='msg err';g.textContent='가족 비밀번호가 맞지 않아요.';$('gate').style.display='block';return}
+setPw(pw);$('gate').style.display='none';g.textContent='';window.LAST=j.list;render(j.list||[]);
+}).catch(function(){g.className='msg err';g.textContent='연결이 잘 안 됐어요. 잠시 뒤 다시 눌러 주세요.'});
+}
+function render(list){
+var by={};list.forEach(function(p){by[p.name]=p});
+var cnt=list.filter(function(p){return p.phone||p.place||p.memo}).length;
+var h='<p class="hint">본인이 직접 넣은 연락처만 보여요. 번호를 누르면 전화가 걸려요. (입력 '+cnt+'명)</p>';
+(KIDS[ROOT]||[]).forEach(function(n2){
+var rows=[];
+(function walk(n){(KIDS[n]||[]).forEach(function(c){rows.push(row(c,by[c]));walk(c)})})(n2);
+if(rows.length)h+='<div class="cf"><h3>'+esc(dn(n2))+' 집안</h3>'+rows.join('')+'</div>';
+});
+$('cl').innerHTML=h;
+}
+function row(n,p){
+var g=(P[n]&&P[n].gen)||3,has=p&&(p.phone||p.place||p.memo);
+var ed='<button type="button" class="ed" data-ed="'+esc(n)+'">'+(has?'고치기':'넣기')+'</button>';
+var sp=info(n).spouse?' <span class="sp">배우자 '+esc(info(n).spouse)+'</span>':'';
+if(!has)return '<div class="row empty g'+g+'"><span class="n">'+esc(dn(n))+'</span><span class="d">아직 입력 전'+sp+'</span>'+ed+'</div>';
+var tel=String(p.phone||'').replace(/[^0-9+]/g,'');
+var parts=[];if(p.phone)parts.push('<a href="tel:'+esc(tel)+'">'+esc(p.phone)+'</a>');else parts.push('<span class="sp">휴대폰 없음</span>');if(p.place)parts.push(esc(p.place));
+return '<div class="row g'+g+'"><span class="n">'+esc(dn(n))+'</span><span class="d">'+parts.join(' · ')+sp+(p.memo?'<span class="m">'+esc(p.memo)+'</span>':'')+'</span>'+ed+'</div>';
+}
+</script>
+</body>
+</html>
