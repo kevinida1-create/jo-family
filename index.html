@@ -326,7 +326,7 @@ if(kidFocus){$('mMsg').className='msg';$('mMsg').textContent='빠진 자녀를 "
 var PFILES=[],SETS={},LB={set:[],i:0};
 function lbShow(){var id=LB.set[LB.i];$('lbImg').src=thumbU(id,1600);$('lbLink').href=fullU(id);$('lbCnt').textContent=LB.set.length>1?(LB.i+1)+' / '+LB.set.length:'';$('lbPrev').style.visibility=LB.set.length>1?'visible':'hidden';$('lbNext').style.visibility=LB.set.length>1?'visible':'hidden'}
 document.addEventListener('keydown',function(e){if($('lb').hidden)return;if(e.key==='Escape')$('lb').hidden=true;if(e.key==='ArrowRight'){LB.i=(LB.i+1)%LB.set.length;lbShow()}if(e.key==='ArrowLeft'){LB.i=(LB.i-1+LB.set.length)%LB.set.length;lbShow()}});
-function thumbU(id,w){return 'https://drive.google.com/thumbnail?id='+encodeURIComponent(id)+'&sz=w'+(w||600)}
+function thumbU(id,w){return 'https://drive.google.com/thumbnail?id='+encodeURIComponent(id)+'&sz=w'+((w||600)+4)}
 function fullU(id){return 'https://drive.google.com/file/d/'+encodeURIComponent(id)+'/view'}
 function toTs(s){var m=String(s).match(/(\d+)-(\d+)-(\d+)\s+(\d+):(\d+)/);return m?new Date(+m[1],m[2]-1,+m[3],+m[4],+m[5]).getTime():0}
 function ago(s){var t=toTs(s);if(!t)return s;var df=(Date.now()-t)/60000;if(df<1)return '방금';if(df<60)return Math.floor(df)+'분 전';if(df<1440)return Math.floor(df/60)+'시간 전';if(df<2880)return '어제';var d=new Date(t);return d.getFullYear()+'.'+(d.getMonth()+1)+'.'+d.getDate()}
